@@ -22,7 +22,7 @@ interface ITemplate {
 }
 
 const compile = async (data: ITemplate) => {
-  const filePath = path.join(process.cwd(), 'src', 'template', 'certificate.hbs');
+  const filePath = path.join(process.cwd(), 'src', 'templates', 'certificate.hbs');
   const html = fs.readFileSync(filePath, 'utf-8');
 
   return Handlebars.compile(html)(data);
@@ -30,7 +30,6 @@ const compile = async (data: ITemplate) => {
 
 export const handle = async (event) => {
   const { id, name, grade } = JSON.parse(event.body) as ICreateCertificate;
-  console.log('test1', process.env.IS_OFFLINE)
 
   await document.put({
     TableName: "users_certificates",
@@ -41,8 +40,7 @@ export const handle = async (event) => {
     }
   }).promise();
 
-  console.log('test2')
-  const medalPath = path.join(process.cwd(), 'src', 'teplates', 'selo.png');
+  const medalPath = path.join(process.cwd(), 'src', 'templates', 'selo.png');
   const medal = fs.readFileSync(medalPath, 'base64');
 
   const data: ITemplate = {
@@ -90,7 +88,8 @@ export const handle = async (event) => {
   return {
     statusCode: 201,
     body: JSON.stringify({
-      message: "Certificate Created!"
+      message: "Certificate Created!",
+      url: `https://srvless-ignite-certificate.s3.sa-east-1.amazonaws.com/${id}.pdf`
     }),
     headers: {
       "Content-Type": "application/json"
