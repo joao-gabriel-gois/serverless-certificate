@@ -6,6 +6,7 @@
   "scripts": {
     "app:dev": "serverless offline",
     "db:dev": "serverless dynamodb start",
+    "update-chromium": "node node_modules/puppeteer-core/install.js",
     "deploy": "sls deploy -v"
   },
   "engines": {
