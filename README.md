@@ -2,17 +2,17 @@
 
 ## Description:
 
->Application created using DynamoDB, AWS Lambda and AWS 
+Application created using DynamoDB, AWS Lambda and AWS 
 S3. Functions created with NodeJS + Typescript. Based on any other education api, this serverless application focus in generate the final certificate for a certain student, after graduate in a certain course.
 
-> Two main functions let this happen:
->
-> - `/generateCertificate`:
-><br> In the body of the request, using JSON format, it necessary to have the certificate id, the user name, and the user's grade for that certain course. It will respond a message confirming that the certificate was created and the url to it (pdf file on aws s3). In case of any 
->
-> - `/verifyCertificate/{id}`:
-><br> By passing the certificate id in the route params, you can check if it is a valid one.<br>
->In case of being a valid one, it will respond with __status code__ `200` and get as response some info such as: the name of the user, the certificate pdf url (on aws s3) and a message confirming it is a valid certificate. In case it's not a valid certificate, it will respond with  a __status code__ `400` and a message informing it is not valid.
+ Two main functions let this happen:
+
+ - `/generateCertificate`:
+<br> In the body of the request, using JSON format, it necessary to have the certificate id, the user name, and the user's grade for that certain course. It will respond a message confirming that the certificate was created and the url to it (pdf file on aws s3).
+
+ - `/verifyCertificate/{id}`:
+<br> By passing the certificate id in the route params, you can check if it is a valid one.<br>
+In case of being a valid one, it will respond with __status code__ `200` and get as response some info such as: the name of the user, the certificate pdf url (on aws s3) and a message confirming it is a valid certificate. In case it's not a valid certificate, it will respond with  a __status code__ `400` and a message informing it is not valid.
 
 ### Details:
 
@@ -24,25 +24,30 @@ For detailed instructions, please refer to the [documentation](https://www.serve
 
 Depending on your preferred package manager, follow the instructions below to deploy your project.
 
-> **Requirements**: NodeJS `lts/fermium (v.14.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
+> **Requirements**: NodeJS `lts/fermium (v.14.x)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
+
+You also need to have serverless installed in your machine, please check instructions here: [Getting Started with Serverless](https://serverless.com/framework/docs/getting-started)
 
 ### Cloning this project:
 
-- Run  `git clone https://github.com/joao-gabriel-gois/serverless-certificate.git && cd serverless-certificate` to clone this repo and move to new repo directory
+- Run  `git clone https://github.com/joao-gabriel-gois/serverless-certificate.git && cd serverless-certificate` to clone this repo and move to new directory
 
+### Setting up your AWS credentials:
+
+- Run `serverless config credentials --provider aws --key=<your-aws-key> --secret <your-aws-secret>`
 ### Using NPM:
 
 - Run `npm i` to install the project dependencies
-- Run `npx sls deploy` to deploy this stack to AWS
+- Run `npm run deploy` to deploy this stack to AWS
 
 ### Using Yarn:
 
 - Run `yarn` to install the project dependencies
-- Run `yarn sls deploy` to deploy this stack to AWS
+- Run `yarn deploy` to deploy this stack to AWS
 
 ## Testing services:
 
-This template contains a single lambda function triggered by an HTTP request made on the provisioned API Gateway REST API `/generateCertificate` route with `POST` method and `/verifyCertificate` rout with `GET` method. The request body must be provided as `application/json`. 
+This template contains a single lambda function triggered by an HTTP request made on the provisioned API Gateway REST API `/generateCertificate` route with `POST` method and `/verifyCertificate` route with `GET` method. The request body must be provided as `application/json`. 
 
 - requesting any other path than `/generateCertificate` with any other method than `POST` or requesthing any other path than `/verifyCertificate` with any other method than `GET` will result in API Gateway returning a `403` HTTP error code.
 
@@ -50,17 +55,24 @@ This template contains a single lambda function triggered by an HTTP request mad
 
 ### Running Locally
 
-In order to test the hello function locally, run the following command:
+In order to run functions locally, run the following command:
 
-- `npx sls invoke local -f hello --path src/functions/hello/mock.json` if you're using NPM
-- `yarn sls invoke local -f hello --path src/functions/hello/mock.json` if you're using Yarn
+- `npm run db:dev` if you're using NPM and in a another shell run `npm run app:dev`;
+- `yarn db:dev` if you're using Yarn and in a another shell run `yarn app:dev`;
 
-Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
+> :warning: In case of any errors envolving chromium version / set up, please run `npm run update-chromium` if you're using NPM or `yarn update-chromium` if you're using Yarn.
+
+After run commands above, __you can call__ `http:localhost:3000` __as Base URL.__
 
 ### Running Remotely
 
 Copy and replace your `url` - found in Serverless `deploy` command output - and `name` parameter in the following `curl` command in your terminal or in Postman to test your newly deployed application. __All ids used in this application are `UUIDs`__.
 
+ - To run in prod env change https://myApiEndpoint by the url provided by AWS when you ran the deploy command.
+
+ - To run in dev env change https://myApiEndpoint to http://localhost:3000 after running all commands above in __Running Locally__ section.
+
+__Generate Certificate Example:__
 ```
 curl --location --request POST 'https://myApiEndpoint/dev/generateCertificate' \
 --header 'Content-Type: application/json' \
@@ -69,6 +81,13 @@ curl --location --request POST 'https://myApiEndpoint/dev/generateCertificate' \
 	"name": "Test User",
 	"grade": "10.00"
 }'
+```
+__Verify Certificate Example:__
+> Verifying the one created by the generateCertificate call above
+```
+curl --location --request GET \
+'https://myApiEndpoint/dev/verifyCertificate/d2d50ca0-59c5-449c-a32c-5055e7662e38'
+
 ```
 
 ## Template features
