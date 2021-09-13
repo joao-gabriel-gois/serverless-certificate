@@ -28,7 +28,7 @@ export const handle: APIGatewayProxyHandler = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: "Certificate Created!",
+      message: "Valid certificate!",
       name: userCertificate.name,
       url: `https://srvless-ignite-certificate.s3.sa-east-1.amazonaws.com/${id}.pdf`
     })
