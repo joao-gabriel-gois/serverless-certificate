@@ -8,11 +8,11 @@ S3. Functions created with NodeJS + Typescript. Based on any other education api
  Two main functions let this happen:
 
  - `/generateCertificate`:
-<br> In the body of the request, using JSON format, it necessary to have the certificate id, the user name, and the user's grade for that certain course. It will respond a message confirming that the certificate was created and the url to it (pdf file on aws s3).
+<br> In the body of the request, using JSON format, it's necessary to inform the certificate id, the user name, and the user's grade for that certain course. It will respond with a message confirming that the certificate was created and the url to it (pdf file on aws s3). You can find more details in the __Running Remotely__ section examples.
 
  - `/verifyCertificate/{id}`:
 <br> By passing the certificate id in the route params, you can check if it is a valid one.<br>
-In case of being a valid one, it will respond with __status code__ `200` and get as response some info such as: the name of the user, the certificate pdf url (on aws s3) and a message confirming it is a valid certificate. In case it's not a valid certificate, it will respond with  a __status code__ `400` and a message informing it is not valid.
+In case of being a valid one, it will respond with __status code__ `200` and respond some info such as: the name of the user, the certificate pdf url (on aws s3) and a message confirming it is a valid certificate. In case it's not a valid certificate, it will respond with  a __status code__ `400` and a message informing it is not valid.
 
 ### Details:
 
@@ -26,7 +26,7 @@ Depending on your preferred package manager, follow the instructions below to de
 
 > **Requirements**: NodeJS `lts/fermium (v.14.x)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
 
-You also need to have serverless installed in your machine, please check instructions here: [Getting Started with Serverless](https://serverless.com/framework/docs/getting-started)
+You also need to install serverless in your machine, please check instructions here: [Getting Started with Serverless](https://serverless.com/framework/docs/getting-started)
 
 ### Cloning this project:
 
@@ -57,8 +57,8 @@ This template contains a single lambda function triggered by an HTTP request mad
 
 In order to run functions locally, run the following command:
 
-- `npm run db:dev` if you're using NPM and in a another shell run `npm run app:dev`;
-- `yarn db:dev` if you're using Yarn and in a another shell run `yarn app:dev`;
+- `npm run db:dev` if you're using NPM and in another shell run `npm run app:dev`;
+- `yarn db:dev` if you're using Yarn and in another shell run `yarn app:dev`;
 
 > :warning: In case of any errors envolving chromium version / set up, please run `npm run update-chromium` if you're using NPM or `yarn update-chromium` if you're using Yarn.
 
