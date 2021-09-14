@@ -55,8 +55,10 @@ This template contains a single lambda function triggered by an HTTP request mad
 
 ### Running Locally
 
-In order to run functions locally, run the following command:
+First of all, it is necessary to install DynamoDB locally:
+- `sls dynamodb install`
 
+In order to run functions locally, run the following command:
 - `npm run db:dev` if you're using NPM and in another shell run `npm run app:dev`;
 - `yarn db:dev` if you're using Yarn and in another shell run `yarn app:dev`;
 
